@@ -1,21 +1,13 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+import app from "./src/app.js";
+import connectDB from "./src/config/db.js";
 
 dotenv.config();
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
-
 connectDB();
 
-app.listen(5000, () => {
-  console.log('Server is running on port 5000!');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
 });
