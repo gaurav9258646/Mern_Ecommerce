@@ -7,11 +7,17 @@ const Login = () => {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
-    
   });
 
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home");
+    }
+  }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -43,12 +49,13 @@ const Login = () => {
       if (data.data.user.role !== "admin") {
         alert("Only admin allowed");
         return;
-      } 
+      }
 
-      // save using context
       login(data.data.user, data.data.accessToken);
 
-      navigate("/doctors");
+      localStorage.setItem("token", data.data.accessToken);
+
+      navigate("/home");
 
     } catch (error) {
       console.log(error);
@@ -56,13 +63,8 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-    useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    navigate("/doctors");
-  }
-}, []);
   };
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <form

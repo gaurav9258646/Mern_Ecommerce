@@ -4,6 +4,7 @@ const { createAppointmentDB,
   getAppointmentsByDoctorDB,
   updateAppointmentDB,
   deleteAppointmentDB,
+  getAllAppointmentsDB,
   isSlotAvailable} = require("../../services/user/appointmentServices");
 const  createAppointment = async (req, res) => {
   try {

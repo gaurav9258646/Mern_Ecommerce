@@ -22,11 +22,15 @@ const updateUserDB = async (id, data) => {
 const deleteUserDB = async (id) => {
   return await User.findByIdAndDelete(id);
 };
+const getAllUsersDB = async () => {
+  return await User.find();
+};
 
 module.exports = {
   registerUserDB,
   findUserByEmailDB,
   findUserByIdDB,
   updateUserDB,
-  deleteUserDB
+  deleteUserDB,
+  getAllUsersDB
 };

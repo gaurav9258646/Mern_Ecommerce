@@ -2,6 +2,7 @@ const {
   registerUserDB,
   findUserByEmailDB,
   updateUserDB,
+  getAllUsersDB,
   deleteUserDB
 } = require("../../services/user/user.services");
 
@@ -135,6 +136,23 @@ const updateUser = async (req, res) => {
     });
   }
 };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await getAllUsersDB();
+
+    res.status(200).json({
+      success: true,
+      data: users
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to fetch users"
+    });
+  }
+};
 
 
 // Delete
@@ -168,5 +186,6 @@ module.exports = {
   register,
   login,
   updateUser,
-  deleteUser
+  deleteUser,
+  getAllUsers
 };

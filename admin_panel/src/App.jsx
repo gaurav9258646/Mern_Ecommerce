@@ -2,22 +2,28 @@ import { Routes, Route } from "react-router-dom";
 import React from "react";
 import Home from "./admin/pages/Home";
 import Doctors from "./admin/pages/Doctors";
-import AdminProtected from "./context/AdminProtected";
 import Login from "./admin/pages/Login";
+import AdminProtected from "./context/AdminProtected";
+import AdminLayout from "./admin/AdminLayout";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home/>}/>
-    <Route path="/" element={<Login />} />
-   <Route
-    path="/doctors"
-    element={
-      <AdminProtected>
-        <Doctors />
-      </AdminProtected>
-    }
-  />
+      {/* Login */}
+      <Route path="/" element={<Login />} />
+
+      {/* Protected Layout */}
+      <Route
+        path="/"
+        element={
+          <AdminProtected>
+            <AdminLayout />
+          </AdminProtected>
+        }
+      >
+        <Route path="home" element={<Home />} />
+        <Route path="doctors" element={<Doctors />} />
+      </Route>
     </Routes>
   );
 };
