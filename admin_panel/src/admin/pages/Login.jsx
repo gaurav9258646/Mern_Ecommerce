@@ -17,19 +17,16 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // ✅ check token
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) navigate("/home");
   }, []);
 
-  // ✅ load saved theme
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "dark") setDark(true);
   }, []);
 
-  // ✅ apply dark mode globally
   useEffect(() => {
     if (dark) {
       document.documentElement.classList.add("dark");
