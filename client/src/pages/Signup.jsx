@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    phone: ""
+    phone: "",
   });
 
   const handleSignup = async () => {
@@ -18,9 +18,9 @@ const Signup = () => {
       const res = await fetch(`${url}/auth/register`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
@@ -29,53 +29,57 @@ const Signup = () => {
         return alert(data.error);
       }
 
-      alert("Signup Success ");
+      alert("Signup Success");
       navigate("/login");
-
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-
-      <div className="bg-white p-6 rounded shadow w-[300px]">
-
-        <h2 className="text-xl font-bold mb-4 text-center">Signup</h2>
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <h2 className="text-2xl font-bold text-center mb-6">Hospital Signup</h2>
 
         <input
-          placeholder="Name"
-          className="border p-2 w-full mb-2"
-          onChange={(e)=>setForm({...form,name:e.target.value})}
+          placeholder="Full Name"
+          className="w-full border rounded-lg px-4 py-3 mb-3"
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
 
         <input
+          type="email"
           placeholder="Email"
-          className="border p-2 w-full mb-2"
-          onChange={(e)=>setForm({...form,email:e.target.value})}
+          className="w-full border rounded-lg px-4 py-3 mb-3"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
         <input
           placeholder="Phone"
-          className="border p-2 w-full mb-2"
-          onChange={(e)=>setForm({...form,phone:e.target.value})}
+          className="w-full border rounded-lg px-4 py-3 mb-3"
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 w-full mb-3"
-          onChange={(e)=>setForm({...form,password:e.target.value})}
+          className="w-full border rounded-lg px-4 py-3 mb-4"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
         <button
           onClick={handleSignup}
-          className="bg-blue-500 text-white w-full py-2 rounded"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium"
         >
-          Signup
+          Create Account
         </button>
 
+        <p className="text-center text-sm mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 font-medium">
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );

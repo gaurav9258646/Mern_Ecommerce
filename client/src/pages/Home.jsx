@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Stethoscope,
-  Phone,
   IndianRupee,
   Calendar,
   Award,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  HeartPulse,
 } from "lucide-react";
 
 import img1 from "../assets/nursingblog.webp";
 import img2 from "../assets/n4.jpg";
 import img3 from "../assets/n5.jpg";
-
 
 const Home = () => {
   const [doctors, setDoctors] = useState([]);
@@ -33,11 +32,14 @@ const Home = () => {
   }, []);
 
   const fetchDoctors = async () => {
-    const url = import.meta.env.VITE_SERVER_URL;
-    const res = await fetch(`${url}/doctor`);
-    const data = await res.json();
-    setDoctors(data.data?.slice(0, 6) || []);
-    console.log(res)
+    try {
+      const url = import.meta.env.VITE_SERVER_URL;
+      const res = await fetch(`${url}/doctor`);
+      const data = await res.json();
+      setDoctors(data.data?.slice(0, 6) || []);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const nextSlide = () => {
@@ -49,25 +51,31 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-
-      <div className="relative h-[300px] md:h-[420px] overflow-hidden">
-
+    <div className="bg-slate-100 min-h-screen">
+      {/* Hero Section */}
+      <div className="relative h-[320px] md:h-[500px] overflow-hidden rounded-b-3xl shadow-sm">
         <img
           src={images[current]}
+          alt="hospital"
           className="w-full h-full object-cover transition duration-700"
         />
 
         <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-white text-center px-4">
-          <h1 className="text-2xl md:text-4xl font-bold flex items-center gap-2">
-            <Stethoscope /> Book Appointment
+          <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl mb-4">
+            <HeartPulse className="w-10 h-10" />
+          </div>
+
+          <h1 className="text-3xl md:text-5xl font-bold flex items-center gap-2">
+            <Stethoscope /> Book Your Appointment
           </h1>
 
-          <p className="mt-2">Fast & Easy Healthcare</p>
+          <p className="mt-3 text-sm md:text-lg text-gray-200 max-w-2xl">
+            Fast, secure and trusted healthcare appointment booking platform
+          </p>
 
           <button
             onClick={() => navigate("/doctors")}
-            className="mt-4 bg-blue-500 px-5 py-2 rounded-full"
+            className="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl font-medium shadow-lg"
           >
             View Doctors
           </button>
@@ -75,65 +83,80 @@ const Home = () => {
 
         <button
           onClick={prevSlide}
-          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 p-2 rounded-full"
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full"
         >
           <ChevronLeft />
         </button>
 
         <button
           onClick={nextSlide}
-          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 p-2 rounded-full"
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full"
         >
           <ChevronRight />
         </button>
-
       </div>
 
-      <div className="p-4 md:p-6">
-        <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center gap-2">
-          <Calendar size={20}/> Available Doctors
-        </h2>
+      {/* Doctors Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 rounded-2xl bg-blue-100">
+            <Calendar size={24} />
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
+              Available Doctors
+            </h2>
+            <p className="text-sm text-gray-500">
+              Choose your specialist and book instantly
+            </p>
+          </div>
+        </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {doctors.map((doc) => (
-            <div key={doc._id} className="bg-white p-5 rounded-2xl shadow">
-
-              <div className="flex justify-center mb-4">
+            <div
+              key={doc._id}
+              className="bg-white rounded-3xl shadow-sm hover:shadow-lg transition p-6 border border-gray-100"
+            >
+              <div className="flex flex-col items-center text-center">
                 <img
                   src={doc.profileImage || "https://via.placeholder.com/150"}
-                  className="w-28 h-28 rounded-full object-cover"
+                  alt="doctor"
+                  className="w-28 h-28 rounded-full object-cover border-4 border-blue-100"
                 />
+
+                <h3 className="mt-4 text-lg font-bold text-slate-800">
+                  {doc.userId?.name}
+                </h3>
+
+                <p className="text-blue-600 font-medium text-sm mt-1">
+                  {doc.specialization}
+                </p>
               </div>
 
-              <h3 className="text-center font-semibold text-blue-600">
-                {doc.userId?.name}
-              </h3>
-              <p className="mt-2 flex items-center justify-center gap-1 text-sm">
-  <Award size={14}/> {doc.experience} yrs experience
-</p>
+              <div className="mt-5 space-y-3 text-sm text-gray-600">
+                <p className="flex items-center gap-2">
+                  <Award size={16} />
+                  {doc.experience} years experience
+                </p>
 
-              <p className="text-center text-sm text-gray-500">
-                {doc.specialization}
-              </p>
-
-              <p className="text-center text-sm">
-                ₹ {doc.fees}
-              </p>
+                <p className="flex items-center gap-2">
+                  <IndianRupee size={16} />
+                  Consultation Fee: ₹{doc.fees}
+                </p>
+              </div>
 
               <button
                 onClick={() => navigate(`/book/${doc._id}`)}
-                className="mt-3 w-full bg-green-500 text-white py-2 rounded"
+                className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-2xl font-medium"
               >
                 Book Appointment
               </button>
-
             </div>
           ))}
-
         </div>
       </div>
-
     </div>
   );
 };

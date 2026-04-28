@@ -6,8 +6,14 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Cell
-} from "recharts";;
+  Cell,
+} from "recharts";
+import {
+  CalendarDays,
+  UserRound,
+  Stethoscope,
+  Activity,
+} from "lucide-react";
 
 const Home = () => {
   const [counts, setCounts] = useState({
@@ -56,7 +62,6 @@ const Home = () => {
           { name: "Doctors", total: doctors.length },
           { name: "Users", total: users.length },
         ]);
-
       } catch (error) {
         console.log("Dashboard Error:", error);
       } finally {
@@ -69,64 +74,93 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-10 text-gray-600">
+      <div className="min-h-screen flex items-center justify-center text-gray-600 font-medium">
         Loading Dashboard...
       </div>
     );
   }
 
+  const cards = [
+    {
+      title: "Appointments",
+      value: counts.appointments,
+      icon: <CalendarDays className="w-6 h-6" />,
+      bg: "bg-blue-50",
+      text: "text-blue-600",
+    },
+    {
+      title: "Doctors",
+      value: counts.doctors,
+      icon: <Stethoscope className="w-6 h-6" />,
+      bg: "bg-green-50",
+      text: "text-green-600",
+    },
+    {
+      title: "Users",
+      value: counts.users,
+      icon: <UserRound className="w-6 h-6" />,
+      bg: "bg-purple-50",
+      text: "text-purple-600",
+    },
+  ];
+
+  const colors = ["#3b82f6", "#10b981", "#8b5cf6"];
+
   return (
-    <div>
-      <h1 className="text-xl md:text-2xl font-bold mb-6">
-        Dashboard
-      </h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
-        
-        <div className="bg-white p-5 rounded shadow hover:shadow-lg transition">
-          <h2 className="text-gray-500 text-sm">Appointments</h2>
-          <p className="text-2xl font-bold text-blue-600">
-            {counts.appointments}
-          </p>
+    <div className="min-h-screen bg-slate-100 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 rounded-2xl bg-white shadow-sm">
+            <Activity className="w-7 h-7" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800">Dashboard</h1>
+            <p className="text-gray-500 text-sm">
+              Hospital admin overview and analytics
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white p-5 rounded shadow hover:shadow-lg transition">
-          <h2 className="text-gray-500 text-sm">Doctors</h2>
-          <p className="text-2xl font-bold text-green-600">
-            {counts.doctors}
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm">{card.title}</p>
+                  <h2 className={`text-3xl font-bold mt-2 ${card.text}`}>
+                    {card.value}
+                  </h2>
+                </div>
+
+                <div className={`p-4 rounded-2xl ${card.bg} ${card.text}`}>
+                  {card.icon}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className="bg-white p-5 rounded shadow hover:shadow-lg transition">
-          <h2 className="text-gray-500 text-sm">Users</h2>
-          <p className="text-2xl font-bold text-purple-600">
-            {counts.users}
-          </p>
-        </div>
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 h-[420px]">
+          <h2 className="text-xl font-semibold mb-5">System Analytics</h2>
 
+          <ResponsiveContainer width="100%" height="90%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+
+              <Bar dataKey="total" radius={[10, 10, 0, 0]}>
+                {chartData.map((entry, index) => (
+                  <Cell key={index} fill={colors[index]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-
-     <div className="bg-white p-4 rounded shadow h-[300px]">
-  <ResponsiveContainer width="100%" height="100%">
-    <BarChart data={chartData}>
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-
-      <Bar dataKey="total">
-        {chartData.map((entry, index) => {
-          const colors = [
-            "#3b82f6", 
-            "#10b981", 
-            "#8b5cf6", 
-          ];
-          return <Cell key={index} fill={colors[index]} />;
-        })}
-      </Bar>
-
-    </BarChart>
-  </ResponsiveContainer>
-</div>
     </div>
   );
 };

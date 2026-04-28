@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { HeartPulse } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleLogin = async () => {
@@ -16,9 +17,9 @@ const Login = () => {
       const res = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
@@ -28,49 +29,51 @@ const Login = () => {
       }
 
       localStorage.setItem("token", data.data.accessToken);
-
-      alert("Login Success ");
-
+      alert("Login Success");
       navigate("/");
-
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-
-      <div className="bg-white p-6 rounded shadow w-[300px]">
-
-        <h2 className="text-xl font-bold mb-4 text-center">
-          Login
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <div className="flex flex-col items-center mb-6">
+          <div className="p-3 rounded-full bg-blue-100 mb-3">
+            <HeartPulse className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-bold">Hospital Login</h2>
+          <p className="text-sm text-gray-500">Welcome back</p>
+        </div>
 
         <input
+          type="email"
           placeholder="Email"
-          className="border p-2 w-full mb-2"
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
+          className="w-full border rounded-lg px-4 py-3 mb-3"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 w-full mb-3"
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
+          className="w-full border rounded-lg px-4 py-3 mb-4"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
         <button
           onClick={handleLogin}
-          className="bg-green-500 text-white w-full py-2 rounded"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium"
         >
           Login
         </button>
 
+        <p className="text-center text-sm mt-4">
+          Don&apos;t have an account?{" "}
+          <Link to="/signup" className="text-blue-600 font-medium">
+            Signup
+          </Link>
+        </p>
       </div>
     </div>
   );
