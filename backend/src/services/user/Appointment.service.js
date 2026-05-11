@@ -11,8 +11,8 @@ const getAllAppointmentsDB = async () => {
       path: "doctorId",
       populate: {
         path: "userId",
-        select: "name email"
-      }
+        select: "name email",
+      },
     });
 };
 
@@ -23,8 +23,8 @@ const getAppointmentByIdDB = async (id) => {
       path: "doctorId",
       populate: {
         path: "userId",
-        select: "name email"
-      }
+        select: "name email",
+      },
     });
 };
 
@@ -34,8 +34,8 @@ const getAppointmentsByPatientDB = async (patientId) => {
       path: "doctorId",
       populate: {
         path: "userId",
-        select: "name"
-      }
+        select: "name",
+      },
     });
 };
 
@@ -47,7 +47,7 @@ const getAppointmentsByDoctorDB = async (doctorId) => {
 const updateAppointmentDB = async (id, data) => {
   return await Appointment.findByIdAndUpdate(id, data, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 };
 
@@ -60,10 +60,37 @@ const isSlotAvailable = async (doctorId, date, time) => {
     doctorId,
     date,
     time,
-    status: { $ne: "cancelled" }
+    status: { $ne: "cancelled" },
   });
 
   return !existing;
+};
+const cancelAppointmentDB = async (id, cancelReason) => {
+  return await Appointment.findByIdAndUpdate(
+    id,
+    {
+      status: "cancelled",
+      cancelReason: cancelReason || "Cancelled by patient",
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
+
+const updatePaymentStatusDB = async (id) => {
+  return await Appointment.findByIdAndUpdate(
+    id,
+    {
+      paymentStatus: "paid",
+      status: "approved",
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 };
 
 module.exports = {
@@ -74,5 +101,8 @@ module.exports = {
   getAppointmentsByDoctorDB,
   updateAppointmentDB,
   deleteAppointmentDB,
-  isSlotAvailable
+  isSlotAvailable,
+  cancelAppointmentDB,
+  updatePaymentStatusDB,
+  
 };

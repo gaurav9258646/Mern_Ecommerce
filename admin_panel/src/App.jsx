@@ -10,6 +10,7 @@ import Login from "./admin/pages/Login";
 import AdminProtected from "./context/AdminProtected";
 import AdminLayout from "./admin/AdminLayout";
 import AdminProfile from "./admin/pages/AdminProfile";
+import PrescriptionForm from "./admin/pages/PrescriptionForm";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/doctors" element={<Doctors />} />
           <Route path="/appointments" element={<Appointments />} />
            <Route path="profile" element={<AdminProfile />} /> 
+           <Route path="prescription" element={<PrescriptionForm  />} />
         </Route>
       </Routes>
     </>

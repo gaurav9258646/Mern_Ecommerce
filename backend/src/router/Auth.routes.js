@@ -8,9 +8,9 @@ const {
   deleteUser,
   getAllUsers  ,
   getProfile
-} = require("./../controllers/user/auth.controllers");
+} = require("../controllers/user/Auth.controller");
 
-const authMiddleware = require("./../Middleware/authMiddleware");
+const authMiddleware = require("../Middleware/authMiddleware");
 
 router.post("/register", register);
 router.post("/login", login);

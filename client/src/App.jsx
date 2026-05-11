@@ -8,6 +8,9 @@ import Booking from "./pages/Booking";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import MyPrescriptions from "./pages/MyPrescriptions";
+import MyAppointments from "./pages//MyAppointments";
+
 
 function App() {
   const location = useLocation();
@@ -25,6 +28,9 @@ function App() {
         <Route path="/book/:id" element={<Booking />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/my-prescriptions" element={<MyPrescriptions />} />\
+        <Route path="/my-appointments" element={<MyAppointments />} />
+
       </Routes>
 
       {!shouldHideFooter && <Footer />}

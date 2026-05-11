@@ -4,7 +4,7 @@ const {
     getDoctorByIdDB,
     updateDoctorDB,
     deleteDoctorDB
-} = require("../../services/admin/doctorServices");
+} = require("../../services/admin/doctor.service");
 
 const User = require("../../models/user");
 const bcrypt = require("bcrypt");

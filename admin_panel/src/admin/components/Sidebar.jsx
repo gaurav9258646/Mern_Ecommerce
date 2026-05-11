@@ -5,6 +5,7 @@ import {
   Stethoscope,
   CalendarCheck,
   ShieldPlus,
+  FileText,
 } from "lucide-react";
 
 const Sidebar = ({ closeSidebar }) => {
@@ -27,12 +28,16 @@ const Sidebar = ({ closeSidebar }) => {
       path: "/appointments",
       icon: <CalendarCheck size={20} />,
     },
+    {
+      name: "Prescription",
+      path: "/prescription",
+      icon: <FileText size={20} />,
+    },
   ];
 
   return (
     <aside className="w-64 h-screen sticky top-0 bg-gradient-to-b from-slate-900 to-slate-800 text-white p-6 shadow-xl flex flex-col">
       
-      {/* Logo Section */}
       <div className="flex items-center gap-3 mb-10">
         <div className="p-3 rounded-2xl bg-blue-500/20 border border-blue-400/20">
           <ShieldPlus size={24} className="text-blue-300" />

@@ -6,6 +6,7 @@ import {
   Stethoscope,
   IndianRupee,
   HeartPulse,
+  XCircle,
 } from "lucide-react";
 
 const Booking = () => {
@@ -15,6 +16,7 @@ const Booking = () => {
   const [doctor, setDoctor] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [appointmentId, setAppointmentId] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,6 +45,7 @@ const Booking = () => {
     }
   };
 
+  /* BOOK APPOINTMENT */
   const handleBooking = async () => {
     if (!date || !time) {
       return alert("Select date & time");
@@ -70,8 +73,45 @@ const Booking = () => {
         return alert("Booking failed");
       }
 
+      setAppointmentId(data.data._id);
+
       alert("Appointment Booked Successfully");
-      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /* CANCEL APPOINTMENT */
+  const handleCancelAppointment = async () => {
+    if (!appointmentId) {
+      return alert("No appointment found to cancel");
+    }
+
+    try {
+      const url = import.meta.env.VITE_SERVER_URL;
+
+      const res = await fetch(
+        `${url}/appointments/cancel/${appointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            cancelReason: "Patient not available",
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!data.success) {
+        return alert("Cancel failed");
+      }
+
+      alert("Appointment Cancelled Successfully");
+      setAppointmentId("");
     } catch (error) {
       console.log(error);
     }
@@ -93,6 +133,7 @@ const Booking = () => {
           <h1 className="text-2xl md:text-3xl font-bold">
             Book Appointment
           </h1>
+
           <p className="text-sm text-blue-100 mt-2">
             Fast & secure hospital appointment booking
           </p>
@@ -127,6 +168,7 @@ const Booking = () => {
                 <Calendar size={18} />
                 Select Date
               </label>
+
               <input
                 type="date"
                 className="w-full border rounded-xl px-4 py-3 focus:outline-none"
@@ -140,6 +182,7 @@ const Booking = () => {
                 <Clock size={18} />
                 Select Time
               </label>
+
               <select
                 className="w-full border rounded-xl px-4 py-3 focus:outline-none"
                 value={time}
@@ -153,12 +196,22 @@ const Booking = () => {
               </select>
             </div>
 
+            {/* BOOK BUTTON */}
             <button
               onClick={handleBooking}
               className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-2xl font-medium flex items-center justify-center gap-2 transition"
             >
               <Clock size={18} />
               Confirm Booking
+            </button>
+
+            {/* CANCEL BUTTON */}
+            <button
+              onClick={handleCancelAppointment}
+              className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-2xl font-medium flex items-center justify-center gap-2 transition"
+            >
+              <XCircle size={18} />
+              Cancel Appointment
             </button>
           </div>
         </div>

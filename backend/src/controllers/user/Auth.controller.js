@@ -5,7 +5,7 @@ const {
   getAllUsersDB,
   deleteUserDB,
   getProfileDB
-} = require("../../services/user/user.services");
+} = require("../../services/user/Auth.service")
 
 const {
   generateToken,

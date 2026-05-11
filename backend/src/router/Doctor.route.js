@@ -10,7 +10,7 @@ const {
     getDoctor,
     updateDoctor,
     deleteDoctor,
-} = require("../controllers/admin/doctorController");
+} = require("../controllers/admin/doctor.Controller");
 const upload = require("../Middleware/upload");
 
 

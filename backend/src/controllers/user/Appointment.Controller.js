@@ -6,8 +6,10 @@ const {
   updateAppointmentDB,
   deleteAppointmentDB,
   getAllAppointmentsDB,
-  isSlotAvailable
-} = require("../../services/user/appointmentServices");
+  isSlotAvailable,
+  cancelAppointmentDB,
+  updatePaymentStatusDB,
+} = require("../../services/user/Appointment.service");
 
 const Doctor = require("../../models/doctor");
 
@@ -19,7 +21,7 @@ const createAppointment = async (req, res) => {
     if (!doctorId || !date || !time) {
       return res.status(400).json({
         success: false,
-        error: "doctorId, date and time are required"
+        error: "doctorId, date and time are required",
       });
     }
 
@@ -28,7 +30,7 @@ const createAppointment = async (req, res) => {
     if (!doctor) {
       return res.status(400).json({
         success: false,
-        error: "Invalid doctorId"
+        error: "Invalid doctorId",
       });
     }
 
@@ -37,7 +39,7 @@ const createAppointment = async (req, res) => {
     if (!available) {
       return res.status(400).json({
         success: false,
-        error: "Slot already booked"
+        error: "Slot already booked",
       });
     }
 
@@ -46,21 +48,20 @@ const createAppointment = async (req, res) => {
       doctorId,
       date,
       time,
-      reason
+      reason,
     });
 
     return res.status(201).json({
       success: true,
       message: "Appointment booked successfully",
-      data: appointment
+      data: appointment,
     });
-
   } catch (error) {
     console.log("BOOKING ERROR:", error);
 
     return res.status(500).json({
       success: false,
-      error: error.message || "Failed to create appointment"
+      error: error.message || "Failed to create appointment",
     });
   }
 };
@@ -71,15 +72,14 @@ const getAllAppointments = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: appointments
+      data: appointments,
     });
-
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
       success: false,
-      error: "Failed to fetch appointments"
+      error: "Failed to fetch appointments",
     });
   }
 };
@@ -93,21 +93,20 @@ const getAppointment = async (req, res) => {
     if (!appointment) {
       return res.status(404).json({
         success: false,
-        error: "Appointment not found"
+        error: "Appointment not found",
       });
     }
 
     return res.status(200).json({
       success: true,
-      data: appointment
+      data: appointment,
     });
-
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
       success: false,
-      error: "Error fetching appointment"
+      error: "Error fetching appointment",
     });
   }
 };
@@ -121,22 +120,68 @@ const updateAppointment = async (req, res) => {
     if (!appointment) {
       return res.status(404).json({
         success: false,
-        error: "Appointment not found"
+        error: "Appointment not found",
       });
     }
 
     return res.status(200).json({
       success: true,
       message: "Appointment updated successfully",
-      data: appointment
+      data: appointment,
     });
-
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
       success: false,
-      error: "Update failed"
+      error: "Update failed",
+    });
+  }
+};
+
+const cancelAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { cancelReason } = req.body;
+
+    const appointment = await cancelAppointmentDB(id, cancelReason);
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        error: "Appointment not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Appointment cancelled successfully",
+      data: appointment,
+    });
+  } catch (error) {
+
+    return res.status(500).json({
+      success: false,
+      error: "Failed to cancel appointment",
+    });
+  }
+};
+const getPatientAppointments = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+
+    const appointments = await getAppointmentsByPatientDB(patientId);
+
+    return res.status(200).json({
+      success: true,
+      data: appointments,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      error: "Failed to fetch patient appointments",
     });
   }
 };
@@ -150,29 +195,61 @@ const deleteAppointment = async (req, res) => {
     if (!appointment) {
       return res.status(404).json({
         success: false,
-        error: "Appointment not found"
+        error: "Appointment not found",
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Appointment deleted successfully"
+      message: "Appointment deleted successfully",
     });
-
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
       success: false,
-      error: "Delete failed"
+      error: "Delete failed",
     });
   }
 };
+
+const updatePaymentStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const appointment = await updatePaymentStatusDB(id);
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        error: "Appointment not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment completed successfully",
+      data: appointment,
+    });
+  } catch (error) {
+    console.log("PAYMENT ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      error: "Payment failed",
+    });
+  }
+};
+
+
 
 module.exports = {
   createAppointment,
   getAllAppointments,
   getAppointment,
   updateAppointment,
-  deleteAppointment
+  cancelAppointment,
+  deleteAppointment,
+  getPatientAppointments,
+  updatePaymentStatus
 };
