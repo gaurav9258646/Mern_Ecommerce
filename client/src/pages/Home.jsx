@@ -143,7 +143,7 @@ const Home = () => {
 
                 <p className="flex items-center gap-2">
                   <IndianRupee size={16} />
-                  Consultation Fee: ₹{doc.fees}
+                  Consultation Fees: ₹{doc.fees}
                 </p>
               </div>
 
