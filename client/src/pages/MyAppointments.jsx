@@ -55,7 +55,6 @@ const MyAppointments = () => {
         return alert("Cancel failed");
       }
 
-      alert("Appointment Cancelled Successfully");
       fetchMyAppointments();
     } catch (error) {
       console.log(error);

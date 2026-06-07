@@ -25,12 +25,10 @@ const Login = () => {
       const data = await res.json();
 
       if (!data.success) {
-        return alert("Login failed");
       }
 
       localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("userId", data.data.user._id);
-      alert("Login Success");
       navigate("/");
     } catch (error) {
       console.log(error);

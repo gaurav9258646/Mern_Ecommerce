@@ -29,7 +29,6 @@ const Signup = () => {
         return alert(data.error);
       }
 
-      alert("Signup Success");
       navigate("/login");
     } catch (error) {
       console.log(error);
