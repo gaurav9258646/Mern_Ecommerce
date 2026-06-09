@@ -11,6 +11,7 @@ import AdminProtected from "./context/AdminProtected";
 import AdminLayout from "./admin/AdminLayout";
 import AdminProfile from "./admin/pages/AdminProfile";
 import PrescriptionForm from "./admin/pages/PrescriptionForm";
+import Gallery from "./admin/pages/Gallery";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/appointments" element={<Appointments />} />
            <Route path="profile" element={<AdminProfile />} /> 
            <Route path="prescription" element={<PrescriptionForm  />} />
+           <Route path="/gallery" element={<Gallery />} />
         </Route>
       </Routes>
     </>

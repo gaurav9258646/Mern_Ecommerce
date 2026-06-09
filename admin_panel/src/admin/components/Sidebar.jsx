@@ -6,6 +6,7 @@ import {
   CalendarCheck,
   ShieldPlus,
   FileText,
+  Image,
 } from "lucide-react";
 
 const Sidebar = ({ closeSidebar }) => {
@@ -33,6 +34,11 @@ const Sidebar = ({ closeSidebar }) => {
       path: "/prescription",
       icon: <FileText size={20} />,
     },
+    {
+      name: "Gallery",
+      path: "/gallery",
+      icon: <Image size={20} />,
+    },
   ];
 
   return (
@@ -51,6 +57,7 @@ const Sidebar = ({ closeSidebar }) => {
         </div>
       </div>
 
+      {/* Menu */}
       <ul className="space-y-3 flex-1">
         {menu.map((item) => {
           const active = location.pathname === item.path;
@@ -78,6 +85,7 @@ const Sidebar = ({ closeSidebar }) => {
         })}
       </ul>
 
+      {/* Footer */}
       <div className="pt-6 border-t border-white/10">
         <p className="text-xs text-gray-400 text-center">
           © 2026 Admin Panel

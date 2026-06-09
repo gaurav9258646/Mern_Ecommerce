@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MyPrescriptions from "./pages/MyPrescriptions";
 import MyAppointments from "./pages//MyAppointments";
+import Gallery from "./pages/Gallery";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/my-prescriptions" element={<MyPrescriptions />} />\
         <Route path="/my-appointments" element={<MyAppointments />} />
+        <Route path="/gallery" element={<Gallery />} />
 
       </Routes>
 
