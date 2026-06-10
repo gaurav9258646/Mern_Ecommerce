@@ -5,7 +5,7 @@ const createGalleryDB = async (data) => {
 };
 
 const getAllGalleryDB = async () => {
-    return await Gallery.find().sort({ createdAt: -1 });
+    return await Gallery.find();
 };
 
 const getGalleryByIdDB = async (id) => {

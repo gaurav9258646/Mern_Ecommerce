@@ -8,6 +8,8 @@ const {
 // Create Gallery
 const createGallery = async (req, res) => {
     try {
+        console.log(req.body);
+        console.log(req.file);
         const { title, category, image: imageUrl } = req.body;
 
         const image = req.file?.path || imageUrl;
